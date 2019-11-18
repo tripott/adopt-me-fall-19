@@ -1,11 +1,23 @@
-import React, { useState } from 'react'
-import { ANIMALS } from '@frontendmasters/pet'
+import React, { useState, useEffect } from 'react'
+import pet, { ANIMALS } from '@frontendmasters/pet'
 
 const SearchParams = () => {
   const [location, setLocation] = useState('Seattle, WA')
   const [animal, setAnimal] = useState('dog')
   const [breed, setBreed] = useState('')
   const [breeds, setBreeds] = useState([])
+
+  useEffect(() => {
+    setBreeds([])
+    setBreed('')
+    pet.breeds(animal).then(
+      ({ breeds }) => {
+        const arrBreedNames = breeds.map(breed => breed.name)
+        setBreeds(arrBreedNames)
+      },
+      err => console.log(err)
+    )
+  }, [animal, setBreeds, setBreed])
 
   return (
     <div className="search-params">
